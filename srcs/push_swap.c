@@ -72,7 +72,7 @@ int
 {
 	if (!stack->next)
 		return (0);
-	while (stack->next->next)
+	while (stack->next)
 	{
 		if (stack->nb == nb)
 			return (-1);
