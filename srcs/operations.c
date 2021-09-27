@@ -1,9 +1,11 @@
 #include "../include/push_swap.h"
 
-/* envoyer ft_lstlast en arg ça marche pas.
-   Il faudrait que j'envoi une variable que j'aurais déclaré préalablement
- 	De plus, il faut que je revoi le fonctionnement de la fonction generic_operation.
- Elle ne met pas NULL a la fin de la lst quand il le faut. */
+/*
+   ma fonction générique était trop bancale.
+   Il faut que je la refasse avec GRAND précision.
+   Il faudra aussi prendre en compte si une des stack n'a qu'un arg
+   ou si elle est vide
+ */
 
 static t_stack
 	*ft_lstlast(t_stack *lst)
@@ -28,6 +30,7 @@ static void
 	}
 	while (op[++i])
 		str[(*len)++] = op[i];
+	str[(*len)++] = '\n';
 	str[(*len)] = 0;
 }
 
@@ -47,12 +50,12 @@ static void
 	}
 	else
 	{
-		*ptr_1 = (*ptr_1)->next;
+		*ptr_1 = tmp->next;
 		if (ptr_2)
-			tmp->next = (*ptr_2);
+			tmp->next = *ptr_2;
 		else
 			tmp->next = NULL;
-		(*ptr_3)->next = tmp;
+		(*ptr_3) = tmp;
 	}
 }
 
@@ -66,22 +69,22 @@ void
 	last_tmp_a = ft_lstlast(stack->a);
 	last_tmp_b = ft_lstlast(stack->b);
 	if (op[0] == 's' && op[1] == 'a')
-		generic_operation(&(stack->a), &(stack->a->next->next), &(stack->a), 0);
+		generic_operation(&(stack->a), &(stack->a->next->next), &(stack->a->next->next), 0);
 	else if (op[0] == 's' && op[1] == 'b')
-		generic_operation(&(stack->b), &(stack->b->next->next), &(stack->b), 0);
+		generic_operation(&(stack->b), &(stack->b->next->next), &(stack->b->next->next), 0);
 	else if (op[0] == 's' && op[1] == 's')
 	{
-		generic_operation(&(stack->a), &(stack->a->next->next), &(stack->a), 0);
-		generic_operation(&(stack->b), &(stack->b->next->next), &(stack->b), 0);
+		generic_operation(&(stack->a), &(stack->a->next->next), &(stack->a->next->next), 0);
+		generic_operation(&(stack->b), &(stack->b->next->next), &(stack->b->next->next), 0);
 	}
 	else if (op[0] == 'p' && op[1] == 'a')
 		generic_operation(&(stack->b), &(stack->a), &(stack->a), 0);
 	else if (op[0] == 'p' && op[1] == 'b')
 		generic_operation(&(stack->a), &(stack->b), &(stack->b), 0);
 	else if (op[0] == 'r' && op[1] == 'a')
-		generic_operation(&(stack->a), NULL, &(last_tmp_a), 0);
+		generic_operation(&(stack->a), NULL, &(last_tmp_a)->next, 0);
 	else if (op[0] == 'r' && op[1] == 'b')
-		generic_operation(&(stack->b), NULL, &(last_tmp_b), 0);
+		generic_operation(&(stack->b), NULL, &(last_tmp_b)->next, 0);
 	else if (op[0] == 'r' && op[1] == 'r' && op[2] == 'a')
 		generic_operation(&(stack->a), &(last_tmp_a), NULL, 1);
 	else if (op[0] == 'r' && op[1] == 'r' && op[2] == 'b')
@@ -93,7 +96,7 @@ void
 	}
 	else if (op[0] == 'r' && op[1] == 'r')
 	{
-		generic_operation(&(stack->a), NULL, &(last_tmp_a), 0);
-		generic_operation(&(stack->b), NULL, &(last_tmp_b), 0);
+		generic_operation(&(stack->a), NULL, &(last_tmp_a)->next, 0);
+		generic_operation(&(stack->b), NULL, &(last_tmp_b)->next, 0);
 	}
 }

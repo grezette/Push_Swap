@@ -36,8 +36,24 @@ t_stack
 
 	new_elem = (t_stack *)malloc(sizeof(t_stack *));
 	if (new_elem)
+	{
 		new_elem->nb = nb;
+		new_elem->next = NULL;
+	}
 	return (new_elem);
+}
+
+int		init_var(int ac, t_plural_stacks *stack, t_info *inf)
+{
+	stack->a = init_elem(0);
+	if (!stack->a)
+		return (-1);
+	stack->b = NULL;
+	inf->i = 0;
+	inf->size = ac - 1;
+	inf->min_arg = INT_MAX;
+	inf->max_arg = INT_MIN;
+	return (0);
 }
 
 int
@@ -82,7 +98,7 @@ int
 }
 
 int
-	pars_arg(int ac, char **av, t_stack **a)
+	pars_arg(int ac, char **av, t_stack **a, t_info *inf)
 {
 	t_stack *tmp;
 
@@ -95,6 +111,10 @@ int
 			return (-1);
 		if (check_if_double_arg(*a, tmp->nb))
 			return (-1);
+		if (tmp->nb > inf->max_arg)
+			inf->max_arg = tmp->nb;
+		if (tmp->nb < inf->min_arg)
+			inf->min_arg = tmp->nb;
 		if (ac - 1)
 		{
 			tmp->next = init_elem(0);
@@ -110,15 +130,14 @@ int
 	main (int ac, char **av)
 {
 	t_plural_stacks stack;
+	t_info			inf;
 
-	stack.a = init_elem(0);
-	if (!stack.a)
+	if (init_var(ac, &stack, &inf))
 		return (write(1, "Error\n", 6));
-	stack.b = NULL;
-	if (pars_arg(ac, av, &stack.a))
+	if (pars_arg(ac, av, &stack.a, &inf))
 		return (write(1, "Error\n", 6) + free_memory(stack));
 	if (ac <= 6)
-		psw_small_algo(&stack, ac - 1);
+		psw_small_algo(&stack, &inf);
 	print_args(stack.a);
 	free_memory(stack);
 	return (0);

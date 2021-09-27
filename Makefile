@@ -1,6 +1,7 @@
 NAME 	= push_swap
 
 SRCS 	=	srcs/push_swap.c \
+			srcs/push_swap_utils.c \
 			srcs/psw_small_algo.c \
 			srcs/operations.c
 
