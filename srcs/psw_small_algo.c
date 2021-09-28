@@ -1,41 +1,5 @@
 #include "../include/push_swap.h"
 
-/* 
-   	Idées de fonction:
-	- Fonction qui appel en boucle psw_oper via une string:
-		while (str[++i])
-		{
-			while (str[i] != '\n')
-				tmp_str[j++] = str[i++];
-			tmp_str[j] = 0;
-			i -= j;
-			j = 0;
-			psw_operation(stack, str, tmp_str, i)
-		}
-	
-	- Fonction qui ajoute une string apres une autre
-		(genre un strjoin mais pour les opération)
-*/
-
-void
-	psw_multiple_op(t_plural_stacks *stack, char *str, t_info *inf)
-{
-	int j;
-	int k;
-	char op[4];
-
-	j = -1;
-	k = 0;
-	while (str[++j])
-	{
-		while (str[j] && str[j] != '\n')
-			op[k++] = str[j++];
-		op[k] = 0;
-		psw_operation(stack, inf->output, op, &(inf->i));
-		k = 0;
-	}
-}
-
 static void
 	psw_sort_three_args(t_plural_stacks *stack, char *str, int *len)
 {
@@ -79,55 +43,62 @@ static void
 	}
 }
 
-void
-	psw_sort_two_in_three(t_plural_stacks *stack, char *str, int *i, t_info *inf)
+static void
+	psw_sort_fifth_in_four_particular_case(t_plural_stacks *stack, t_info *inf)
 {
-	if (inf->min_arg == stack->b->nb || inf->min_arg == stack->b->next->nb ||
-			inf->max_arg == stack->b->nb || inf->max_arg == stack->b->next->nb)
+	if (stack->b->nb < stack->b->next->nb)
+		psw_operation(stack, inf->output, "rb", &inf->i);
+	if (stack->a->next->nb > stack->b->nb)
+		psw_operation(stack, inf->output, "ra", &inf->i);
+	else 
+		psw_operation(stack, inf->output, "rra", &inf->i);
+	psw_multiple_op(stack, "pa\npa\n", inf);
+	if (stack->a->nb < stack->a->next->nb)
+		psw_operation(stack, inf->output, "rra", &inf->i);
+	else
+		psw_operation(stack, inf->output, "ra", &inf->i);
+}
+
+static void
+	psw_sort_two_in_three(t_plural_stacks *stack, t_info *inf, int ac)
+{
+	if (stack->b->nb == 0 || stack->b->next->nb == 0 ||
+			stack->b->nb == ac || stack->b->next->nb == ac)
 	{
-		if (inf->min_arg == stack->b->nb || (inf->max_arg == stack->b->nb &&
-					inf->min_arg != stack->b->next->nb))
-			psw_operation(stack, str, "rb", i);
-		psw_sort_fourth_arg(stack, str, i);
-		psw_operation(stack, str, "pa", i);
+		if (stack->b->nb == 0|| (stack->b->nb == 0 &&
+					stack->b->next->nb != 0))
+			psw_operation(stack, inf->output, "rb", &inf->i);
+		psw_sort_fourth_arg(stack, inf->output, &inf->i);
+		psw_operation(stack, inf->output, "pa", &inf->i);
 		if (stack->a->nb > stack->a->next->nb)
-			psw_operation(stack, str, "ra", i);
+			psw_operation(stack, inf->output, "ra", &inf->i);
 	}
-	else if ((stack->a->next->nb > stack->b->nb && stack->a->next->nb < stack->b->next->nb) || (stack->a->next->nb < stack->b->nb && stack->a->next->nb > stack->b->next->nb))
+	else if ((stack->a->next->nb > stack->b->nb &&
+				stack->a->next->nb < stack->b->next->nb) ||
+			(stack->a->next->nb < stack->b->nb &&
+			 stack->a->next->nb > stack->b->next->nb))
 	{
 		if (stack->b->nb > stack->b->next->nb)
-			psw_operation(stack, str, "rb", i);
+			psw_operation(stack, inf->output, "rb", &inf->i);
 		psw_multiple_op(stack, "ra\npa\nra\nra\npa\nra\nra\n", inf);
 	}
 	else
-	{
-		if (stack->b->nb < stack->b->next->nb)
-			psw_operation(stack, str, "rb", i);
-		if (stack->a->next->nb > stack->b->nb)
-			psw_operation(stack, str, "ra", i);
-		else 
-			psw_operation(stack, str, "rra", i);
-		psw_multiple_op(stack, "pa\npa\n", inf);
-		if (stack->a->nb < stack->a->next->nb)
-			psw_operation(stack, str, "rra", i);
-		else
-			psw_operation(stack, str, "ra", i);
-	}
+		psw_sort_fifth_in_four_particular_case(stack, inf);
 }
 
 int
-	psw_small_algo(t_plural_stacks *stack, t_info *inf)
+	psw_small_algo(t_plural_stacks *stack, t_info *inf, int ac)
 {
-	if (inf->size == 3)
+	if (ac - 1 == 3)
 		psw_sort_three_args(stack, inf->output, &(inf->i));
-	else if (inf->size == 4 || inf->size == 5)
+	if (ac - 1 == 4 || ac - 1 == 5)
   	{
-		if (inf->size == 5)
+		if (ac - 1 == 5)
 			psw_operation(stack, inf->output, "pb", &(inf->i));
 		psw_operation(stack, inf->output, "pb", &(inf->i));
 		psw_sort_three_args(stack, inf->output, &(inf->i));
-		if (inf->size == 5)
-			psw_sort_two_in_three(stack, inf->output, &(inf->i), inf);
+		if (ac - 1  == 5)
+			psw_sort_two_in_three(stack, inf, ac);
 		else
 			psw_sort_fourth_arg(stack, inf->output, &(inf->i));
   	}

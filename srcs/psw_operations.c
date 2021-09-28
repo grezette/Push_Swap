@@ -1,12 +1,5 @@
 #include "../include/push_swap.h"
 
-/*
-   ma fonction générique était trop bancale.
-   Il faut que je la refasse avec GRAND précision.
-   Il faudra aussi prendre en compte si une des stack n'a qu'un arg
-   ou si elle est vide
- */
-
 static t_stack
 	*ft_lstlast(t_stack *lst)
 {
@@ -59,29 +52,11 @@ static void
 	}
 }
 
-void
-	psw_operation(t_plural_stacks *stack, char *str, char *op, int *len)
+static void
+	psw_operation_2(t_plural_stacks *stack, char *op,
+			t_stack *last_tmp_a, t_stack *last_tmp_b)
 {
-	t_stack *last_tmp_a;
-	t_stack *last_tmp_b;
-
-	add_op_to_str(op, str, len);
-	last_tmp_a = ft_lstlast(stack->a);
-	last_tmp_b = ft_lstlast(stack->b);
-	if (op[0] == 's' && op[1] == 'a')
-		generic_operation(&(stack->a), &(stack->a->next->next), &(stack->a->next->next), 0);
-	else if (op[0] == 's' && op[1] == 'b')
-		generic_operation(&(stack->b), &(stack->b->next->next), &(stack->b->next->next), 0);
-	else if (op[0] == 's' && op[1] == 's')
-	{
-		generic_operation(&(stack->a), &(stack->a->next->next), &(stack->a->next->next), 0);
-		generic_operation(&(stack->b), &(stack->b->next->next), &(stack->b->next->next), 0);
-	}
-	else if (op[0] == 'p' && op[1] == 'a')
-		generic_operation(&(stack->b), &(stack->a), &(stack->a), 0);
-	else if (op[0] == 'p' && op[1] == 'b')
-		generic_operation(&(stack->a), &(stack->b), &(stack->b), 0);
-	else if (op[0] == 'r' && op[1] == 'a')
+	if (op[0] == 'r' && op[1] == 'a')
 		generic_operation(&(stack->a), NULL, &(last_tmp_a)->next, 0);
 	else if (op[0] == 'r' && op[1] == 'b')
 		generic_operation(&(stack->b), NULL, &(last_tmp_b)->next, 0);
@@ -99,4 +74,33 @@ void
 		generic_operation(&(stack->a), NULL, &(last_tmp_a)->next, 0);
 		generic_operation(&(stack->b), NULL, &(last_tmp_b)->next, 0);
 	}
+}
+
+void
+	psw_operation(t_plural_stacks *stack, char *str, char *op, int *len)
+{
+	t_stack *last_tmp_a;
+	t_stack *last_tmp_b;
+
+	add_op_to_str(op, str, len);
+	last_tmp_a = ft_lstlast(stack->a);
+	last_tmp_b = ft_lstlast(stack->b);
+	if (op[0] == 's' && op[1] == 'a')
+		generic_operation(&(stack->a), &(stack->a->next->next),
+				&(stack->a->next->next), 0);
+	else if (op[0] == 's' && op[1] == 'b')
+		generic_operation(&(stack->b), &(stack->b->next->next),
+				&(stack->b->next->next), 0);
+	else if (op[0] == 's' && op[1] == 's')
+	{
+		generic_operation(&(stack->a), &(stack->a->next->next),
+				&(stack->a->next->next), 0);
+		generic_operation(&(stack->b), &(stack->b->next->next),
+				&(stack->b->next->next), 0);
+	}
+	else if (op[0] == 'p' && op[1] == 'a')
+		generic_operation(&(stack->b), &(stack->a), &(stack->a), 0);
+	else if (op[0] == 'p' && op[1] == 'b')
+		generic_operation(&(stack->a), &(stack->b), &(stack->b), 0);
+	psw_operation_2(stack, op, last_tmp_a, last_tmp_b);
 }
