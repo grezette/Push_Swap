@@ -40,7 +40,7 @@ int
 	if (!psw_a_is_sorted(stack.a))
 		return (free_memory(stack));
 	if (ac <= 6)
-		psw_small_algo(&stack, &inf, ac);
+		psw_small_algo(&stack, &inf, ac - 1);
 	else
 		psw_regular_algo(&stack, &inf, ac);
 	free_memory(stack);

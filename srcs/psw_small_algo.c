@@ -57,15 +57,16 @@ static void
 		psw_operation(stack, inf->output, "rra", &inf->i);
 	else
 		psw_operation(stack, inf->output, "ra", &inf->i);
+	printf("|%d|", stack->a->next->next->nb);
 }
 
 static void
 	psw_sort_two_in_three(t_plural_stacks *stack, t_info *inf, int ac)
 {
 	if (stack->b->nb == 0 || stack->b->next->nb == 0 ||
-			stack->b->nb == ac || stack->b->next->nb == ac)
+			stack->b->nb == ac - 1 || stack->b->next->nb == ac - 1)
 	{
-		if (stack->b->nb == 0|| (stack->b->nb == 0 &&
+		if (stack->b->nb == 0 || (stack->b->nb == ac - 1 &&
 					stack->b->next->nb != 0))
 			psw_operation(stack, inf->output, "rb", &inf->i);
 		psw_sort_fourth_arg(stack, inf->output, &inf->i);
@@ -89,15 +90,15 @@ static void
 int
 	psw_small_algo(t_plural_stacks *stack, t_info *inf, int ac)
 {
-	if (ac - 1 == 3)
+	if (ac == 3)
 		psw_sort_three_args(stack, inf->output, &(inf->i));
-	if (ac - 1 == 4 || ac - 1 == 5)
+	if (ac == 4 || ac == 5)
   	{
-		if (ac - 1 == 5)
+		if (ac == 5)
 			psw_operation(stack, inf->output, "pb", &(inf->i));
 		psw_operation(stack, inf->output, "pb", &(inf->i));
 		psw_sort_three_args(stack, inf->output, &(inf->i));
-		if (ac - 1  == 5)
+		if (ac == 5)
 			psw_sort_two_in_three(stack, inf, ac);
 		else
 			psw_sort_fourth_arg(stack, inf->output, &(inf->i));
