@@ -3,9 +3,9 @@
 void
 	psw_multiple_op(t_plural_stacks *stack, char *str, t_info *inf)
 {
-	int j;
-	int k;
-	char op[4];
+	int		j;
+	int		k;
+	char	op[4];
 
 	j = -1;
 	k = 0;
@@ -22,7 +22,7 @@ void
 int
 	free_memory(t_plural_stacks stack)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	while (stack.a)
 	{
@@ -42,7 +42,7 @@ int
 t_stack
 	*init_elem(int nb)
 {
-	t_stack *new_elem;
+	t_stack	*new_elem;
 
 	new_elem = (t_stack *)malloc(sizeof(t_stack *));
 	if (new_elem)

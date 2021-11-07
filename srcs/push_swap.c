@@ -1,11 +1,52 @@
 #include "../include/push_swap.h"
 
+int
+	prs_atoi(char *av, int *nb)
+{
+	int			minus;
+	long int	atoi;
+
+	atoi = 0;
+	minus = 1;
+	if (*av == '-')
+	{
+		minus = -1;
+		av++;
+	}
+	while ('0' <= *av && *av <= '9')
+	{
+		atoi = atoi * 10 + *av++ - '0';
+		if (atoi - 1 == INT_MAX && minus == -1 && !*av)
+			break ;
+		else if (atoi > INT_MAX)
+			return (-1);
+	}
+	if (*av)
+		return (-1);
+	*nb = atoi * minus;
+	return (0);
+}
+
+int
+	check_if_double_arg(t_stack *stack, int nb)
+{
+	if (!stack->next)
+		return (0);
+	while (stack->next)
+	{
+		if (stack->nb == nb)
+			return (-1);
+		stack = stack->next;
+	}
+	return (0);
+}
+
 static void
 	psw_regular_algo(t_plural_stacks *stack, t_info *inf, int ac)
 {
-	int right_shift;
+	int	right_shift;
 	int	max_bits;
-	int tmp;
+	int	tmp;
 
 	right_shift = -1;
 	max_bits = 3;
@@ -16,7 +57,7 @@ static void
 		tmp = ac;
 		while (--tmp)
 		{
-			if (((stack->a->nb >> right_shift)&1))
+			if (((stack->a->nb >> right_shift) & 1))
 				psw_operation(stack, inf->output, "ra", &inf->i);
 			else
 				psw_operation(stack, inf->output, "pb", &inf->i);
@@ -28,9 +69,9 @@ static void
 }
 
 int
-	main (int ac, char **av)
+	main(int ac, char **av)
 {
-	t_plural_stacks stack;
+	t_plural_stacks	stack;
 	t_info			inf;
 
 	if (init_var(&stack, &inf))

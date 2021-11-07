@@ -28,9 +28,10 @@ static void
 }
 
 static void
-	generic_operation(t_stack **ptr_1, t_stack **ptr_2, t_stack **ptr_3, int bol)
+	generic_operation(t_stack **ptr_1,
+			t_stack **ptr_2, t_stack **ptr_3, int bol)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	tmp = *ptr_1;
 	if (bol)
@@ -79,24 +80,24 @@ static void
 void
 	psw_operation(t_plural_stacks *stack, char *str, char *op, int *len)
 {
-	t_stack *last_tmp_a;
-	t_stack *last_tmp_b;
+	t_stack	*last_tmp_a;
+	t_stack	*last_tmp_b;
 
 	add_op_to_str(op, str, len);
 	last_tmp_a = ft_lstlast(stack->a);
 	last_tmp_b = ft_lstlast(stack->b);
 	if (op[0] == 's' && op[1] == 'a')
 		generic_operation(&(stack->a), &(stack->a->next->next),
-				&(stack->a->next->next), 0);
+			&(stack->a->next->next), 0);
 	else if (op[0] == 's' && op[1] == 'b')
 		generic_operation(&(stack->b), &(stack->b->next->next),
-				&(stack->b->next->next), 0);
+			&(stack->b->next->next), 0);
 	else if (op[0] == 's' && op[1] == 's')
 	{
 		generic_operation(&(stack->a), &(stack->a->next->next),
-				&(stack->a->next->next), 0);
+			&(stack->a->next->next), 0);
 		generic_operation(&(stack->b), &(stack->b->next->next),
-				&(stack->b->next->next), 0);
+			&(stack->b->next->next), 0);
 	}
 	else if (op[0] == 'p' && op[1] == 'a')
 		generic_operation(&(stack->b), &(stack->a), &(stack->a), 0);
