@@ -11,7 +11,7 @@ static void
 	max_bits = 3;
 	while (ac >> max_bits)
 		max_bits++;
-	while (++right_shift <= max_bits + 1)
+	while (++right_shift <= max_bits - 1)
 	{
 		tmp = ac;
 		while (--tmp)
@@ -43,11 +43,6 @@ int
 		psw_small_algo(&stack, &inf, ac - 1);
 	else
 		psw_regular_algo(&stack, &inf, ac);
-	while (stack.a)
-	{
-		printf("%d\n", stack.a->nb);
-		stack.a = stack.a->next;
-	}
 	free_memory(stack);
 	return (0);
 }

@@ -87,7 +87,7 @@ static int
 			minus = 1;
 		range *= 2;
 	}
-	printf("Ton binary_search marche pas fréro\n");
+	//printf("Ton binary_search marche pas fréro\n");
 	return (1);
 }
 

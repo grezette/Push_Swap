@@ -13,12 +13,12 @@ static t_stack
 static void
 	add_op_to_str(char *op, char *str, int *len)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	if (*len > 4093)
+	if (*len >= 4093)
 	{
-		write(1, str, *len + 1);
+		write(1, str, *len);
 		*len = 0;
 	}
 	while (op[++i])
