@@ -54,10 +54,11 @@ static void
 		psw_operation(stack, inf->output, "rra", &inf->i);
 	psw_multiple_op(stack, "pa\npa\n", inf);
 	if (stack->a->nb < stack->a->next->nb)
-		psw_operation(stack, inf->output, "rra", &inf->i);
+		while (stack->a->nb)
+			psw_operation(stack, inf->output, "rra", &inf->i);
 	else
-		psw_operation(stack, inf->output, "ra", &inf->i);
-	printf("|%d|", stack->a->next->next->nb);
+		while (stack->a->nb)
+			psw_operation(stack, inf->output, "ra", &inf->i);
 }
 
 static void
