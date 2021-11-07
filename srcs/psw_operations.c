@@ -18,7 +18,7 @@ static void
 	i = -1;
 	if (*len > 4093)
 	{
-		write(1, str, *len + 1);
+		// write(1, str, *len + 1);
 		*len = 0;
 	}
 	while (op[++i])
